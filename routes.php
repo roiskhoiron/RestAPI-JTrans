@@ -115,15 +115,26 @@ $app->post("/users/new/", function(Request $request, Response $response) {
     $app->get("/reservasi/", function(Request $request, Response  $response, array $args) {
         $keyword    = $request->getQueryParam("date");
 
-        $sql    = "SELECT   r.rsv_id, rd.rsv_det_id, p.plgn_nmlengkap, rd.rsv_nama_mtr, r.rsv_jam_mulai, 
-                            r.note, rd.rsv_det_helm, rd.rsv_det_jashujan, r.total, rd.monitor
-                    FROM    pelanggan p, reservasi_detail rd, reservasi r 
-                    WHERE 
-                            r.rsv_id = rd.rsv_id AND 
-                            p.plgn_no_identitas = r.plgn_no_identitas AND 
-                            r.rsv_tgl_mulai='$keyword' AND 
-                            r.rsv_status='APPROVE'
-                    ORDER BY r.rsv_jam_mulai ASC";
+        $sql    = "SELECT 	r.rsv_id, rd.rsv_det_id, p.plgn_nmlengkap, rd.rsv_nama_mtr, rsv_det_helm,
+                            rd.rsv_det_jashujan,r.total, r.rsv_jam_mulai AS jam, rd.monitor, r.note
+                    FROM 	pelanggan p,
+                            reservasi_detail rd,
+                            reservasi r
+                    WHERE	r.rsv_tgl_mulai = '2020-03-04'
+                            AND r.rsv_id = rd.rsv_id
+                            AND r.plgn_no_identitas = p.plgn_no_identitas
+                            AND r.rsv_status='APPROVE'
+                    UNION
+                    SELECT 	r.rsv_id, rd.rsv_det_id, p.plgn_nmlengkap, rd.rsv_nama_mtr, rsv_det_helm,
+                            rd.rsv_det_jashujan,r.total, r.rsv_jam_selesai AS jam, rd.monitor, r.note
+                    FROM 	pelanggan p,
+                            reservasi_detail rd,
+                            reservasi r
+                    WHERE	r.rsv_tgl_selesai = '2020-03-04'
+                            AND r.rsv_id = rd.rsv_id
+                            AND r.plgn_no_identitas = p.plgn_no_identitas
+                            AND r.rsv_status='APPROVE'  
+                    ORDER BY `jam`  ASC";
                     
         $stmt   = $this->db->prepare($sql);
 
