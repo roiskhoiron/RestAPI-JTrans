@@ -120,7 +120,7 @@ $app->post("/users/new/", function(Request $request, Response $response) {
                     FROM 	pelanggan p,
                             reservasi_detail rd,
                             reservasi r
-                    WHERE	r.rsv_tgl_mulai = '2020-03-04'
+                    WHERE	r.rsv_tgl_mulai = '$keyword'
                             AND r.rsv_id = rd.rsv_id
                             AND r.plgn_no_identitas = p.plgn_no_identitas
                             AND r.rsv_status='APPROVE'
@@ -130,7 +130,7 @@ $app->post("/users/new/", function(Request $request, Response $response) {
                     FROM 	pelanggan p,
                             reservasi_detail rd,
                             reservasi r
-                    WHERE	r.rsv_tgl_selesai = '2020-03-04'
+                    WHERE	r.rsv_tgl_selesai = '$keyword'
                             AND r.rsv_id = rd.rsv_id
                             AND r.plgn_no_identitas = p.plgn_no_identitas
                             AND r.rsv_status='APPROVE'  
