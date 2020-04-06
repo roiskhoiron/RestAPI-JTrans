@@ -116,7 +116,7 @@ $app->post("/users/new/", function(Request $request, Response $response) {
         $keyword    = $request->getQueryParam("date");
 
         $sql    = "SELECT 	r.rsv_id, rd.rsv_det_id, p.plgn_nmlengkap, rd.rsv_nama_mtr, rsv_det_helm,
-                            rd.rsv_det_jashujan,r.total, r.rsv_jam_mulai AS jam, rd.monitor, r.note
+                            rd.rsv_det_jashujan,r.total, r.rsv_jam_mulai AS jam, rd.monitor = 0 AS monitor, r.note
                     FROM 	pelanggan p,
                             reservasi_detail rd,
                             reservasi r
@@ -126,7 +126,7 @@ $app->post("/users/new/", function(Request $request, Response $response) {
                             AND r.rsv_status='APPROVE'
                     UNION
                     SELECT 	r.rsv_id, rd.rsv_det_id, p.plgn_nmlengkap, rd.rsv_nama_mtr, rsv_det_helm,
-                            rd.rsv_det_jashujan,r.total, r.rsv_jam_selesai AS jam, rd.monitor, r.note
+                            rd.rsv_det_jashujan,r.total, r.rsv_jam_selesai AS jam, rd.monitor = 1 AS monitor, r.note
                     FROM 	pelanggan p,
                             reservasi_detail rd,
                             reservasi r
